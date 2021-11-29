@@ -1,0 +1,54 @@
+server {
+    listen 80;
+    server_name www.atym.pp.ua atym.pp.ua;
+
+    # redirects both www and non-www to https
+    return 301 https://atym.pp.ua$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name www.atym.pp.ua;
+
+    # redirects www to non-www
+    return 301 $scheme://atym.pp.ua$request_uri;
+}
+
+server {
+
+    ## SSL settings
+
+    listen 443 ssl http2 default_server;
+    listen [::]:443 ssl http2 default_server;
+
+    server_name atym.pp.ua;
+
+    include snippets/self-signed.conf;
+    #include snippets/ssl-params.conf;
+
+    # other vhost configuration
+
+    root /var/www/html/;
+
+	index index.html index.htm index.nginx-debian.html index.php;
+
+	location / {
+	
+		try_files $uri $uri/ =404;
+	}
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+	#
+	#	# With php-fpm (or other unix sockets):
+		fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+	#	# With php-cgi (or other tcp sockets):
+	#	fastcgi_pass 127.0.0.1:9000;
+	}
+
+
+
+
+
+
+}
