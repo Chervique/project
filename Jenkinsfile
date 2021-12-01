@@ -19,7 +19,7 @@ pipeline {
                 accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
-                        sh 'TF_VAR_awsid=$AWS_ACCESS_KEY_ID TF_VAR_awskey=$AWS_SECRET_ACCESS_KEY terraform -chdir="./terraform/" ${action} -auto-approve -var "color=${color}"'
+                        sh 'TF_VAR_awsid=$AWS_ACCESS_KEY_ID TF_VAR_awskey=$AWS_SECRET_ACCESS_KEY terraform -chdir="./terraform/" ${action} -var "color=${color}" -auto-approve '
                     }
                 
             }
