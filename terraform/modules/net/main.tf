@@ -19,21 +19,24 @@ resource "aws_subnet" "b" {
     tags = {
         Name = "1b"
     }
-
-    
 } 
-
 resource "aws_subnet" "db" {
     vpc_id = var.vpc_id
     cidr_block = var.db_cidr_block
     map_public_ip_on_launch = true
-   
+   availability_zone = var.zones[1]
     tags = {
-        Name = "db subnet"
+        Name = "db"
     }
 
     
 } 
+
+ resource "aws_db_subnet_group" "db" {
+    subnet_ids = [aws_subnet.a.id, aws_subnet.b.id, aws_subnet.db.id]
+    
+    
+}  
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = var.vpc_id

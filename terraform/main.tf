@@ -19,6 +19,25 @@ module "net" {
   
 }
 
+///   RDS   
+
+resource "aws_db_instance" "default" {
+  db_subnet_group_name = module.net.db_id
+  allocated_storage    = 10
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t2.micro"
+  publicly_accessible  = true
+  vpc_security_group_ids = [module.nginx-sg.security_group.id]
+
+  name                 = "mydb"
+  username             = "atym"
+  password             = "12345678"
+  parameter_group_name = "default.mysql5.7"
+  skip_final_snapshot  = true
+}
+
+
 
 ///   EC2 instances   
 

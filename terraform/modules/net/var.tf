@@ -7,8 +7,8 @@ output "b_id" {
 }
 
 output "db_id" {
-    value = aws_subnet.db.id
-}
+    value = aws_db_subnet_group.db.id
+} 
 
  variable "zones" {
     description = "Availability zones"
