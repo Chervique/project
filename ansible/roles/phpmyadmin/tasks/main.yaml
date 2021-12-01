@@ -1,0 +1,39 @@
+- name: Install MariaDB
+  yum:
+    name:
+      - mariadb-server
+      - mariadb
+
+#- name: install mariadb
+#  command: sudo yum install mariadb-server mariadb-client
+    
+- name: Creates directory
+  file:
+    path: /var/www/html/phpmyadmin/
+    state: directory
+    mode: 0755
+
+- name: Download and unpack PMA
+  unarchive:
+    src: https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz
+    dest: /var/www/html/phpmyadmin
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+
+# - name: install phpmyadmin
+#   command: wget https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz
+
+# - name: Creates directory
+#   file:
+#         path: /var/www/html/phpmyadmin
+#         state: directory
+
+# - name: unzip
+#   command: tar -xvzf phpMyAdmin-latest-all-languages.tar.gz -C /var/www/html/phpmyadmin --strip-components 1
+
+ 
+
+- name: restart nginx
+  service:
+        name: nginx
+        state: restarted  

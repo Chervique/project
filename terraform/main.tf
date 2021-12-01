@@ -1,49 +1,3 @@
-
-////  terraform output ansible_inventory > ../'!HW7 ansible'/inventory.txt
-
-/*
-provisioner "local-exec" { 
-    command = <<-EOT
-     "cd '../!HW7 ansible'"
-     "ssh-agent bash"
-     "sudo cp ../'!HW7 ansible/AWS_atym.pem' ~/.ssh/"
-     "chmod 400 ../'!HW7 ansible/AWS_atym.pem'"
-     "ssh-add ~/.ssh/'AWS_atym.pem'"
-    EOT
-  }
-*/
-
-///   aws key pair    
-
-resource "tls_private_key" "atym" {
-  algorithm = "RSA"
-
-<<<<<<< HEAD
-  provisioner "local-exec" { 
-    command = "chmod 777 ../'!HW7_ansible/AWS atym.pem' && rm -f -- ../'!HW7_ansible/AWS atym.pem'"
-  }
-=======
-  /* provisioner "local-exec" { 
-    command = "rm -f -- ../'!HW7_ansible/AWS_atym.pem'"
-  } */
->>>>>>> ea6360fa87fd80e820e54e169c21057a1ae32ae1
-}
-
-
-
-resource "aws_key_pair" "atym" {
-
-  key_name   = "AWS atym"
-  public_key = tls_private_key.atym.public_key_openssh
-
-
-  provisioner "local-exec" { 
-    command = "echo '${tls_private_key.atym.private_key_pem}' > ../'!HW7_ansible/AWS_atym.pem' && chmod 400 ../'!HW7_ansible/AWS_atym.pem'"
-  }
- 
-}
-
-
 ///   VPC and subnets   
 
 resource "aws_vpc" "main" {
@@ -59,37 +13,61 @@ resource "aws_vpc" "main" {
 module "net" {
   source = "./modules/net"
   vpc_id = aws_vpc.main.id
-  public_cidr_block = "10.0.1.0/24"
-  private_cidr_block = "10.0.2.0/24"
-
+  green_cidr_block = "10.0.1.0/24"
+  blue_cidr_block = "10.0.2.0/24"
+  db_cidr_block = "10.0.3.0/24"
+  
 }
+
 
 ///   EC2 instances   
 
-module "nginx" {
+module "nginx-green-1" {
   source = "./modules/ec2_web"
   vpc_id = aws_vpc.main.id
-
-  count = 2
-  subnet_id = module.net.public_id
-  webserver_name = "nginx"
-  sec_groups = [module.nginx-sg.security_group.id]
-  //user_data     = file("amazon-nginx.sh")
-  //  zones = var.zones[count.index]
   
+  sec_groups = [module.nginx-sg.security_group.id]
+  #zone = "${var.zone != "" ? var.zone: var.zones[ count.index % length(var.zones) ]}"
+  zone = var.zones[0]
+  subnet_id = module.net.a_id         
+  webserver_name = "nginx-green-1"
 }
-
-module "phpmyadmin" {
+module "nginx-green-2" {
   source = "./modules/ec2_web"
   vpc_id = aws_vpc.main.id
-
-  subnet_id = module.net.private_id
-  webserver_name = "phpmyadmin"
-  sec_groups = [module.nginx-sg.security_group.id]
-  //  user_data     = file("phpmyadmin.sh")
-  // zones = ["eu-central-1a","eu-central-1b"]
   
+  sec_groups = [module.nginx-sg.security_group.id]
+  zone = var.zones[1]
+  subnet_id = module.net.b_id         
+  webserver_name = "nginx-green-2"
 }
+module "nginx-blue-1" {
+  source = "./modules/ec2_web"
+  vpc_id = aws_vpc.main.id
+  
+  sec_groups = [module.nginx-sg.security_group.id]
+  #zone = "${var.zone != "" ? var.zone: var.zones[ count.index % length(var.zones) ]}"
+  zone = var.zones[0]
+  subnet_id = module.net.a_id         
+  webserver_name = "nginx-blue-1"
+}
+module "nginx-blue-2" {
+  source = "./modules/ec2_web"
+  vpc_id = aws_vpc.main.id
+  
+  sec_groups = [module.nginx-sg.security_group.id]
+  zone = var.zones[1]
+  subnet_id = module.net.b_id         
+  webserver_name = "nginx-blue-2"
+}
+
+
+///   DATABASE    
+/* module "rds" {
+  source = "./modules/rds"
+  
+  
+} */
 
 ///   Roles and policies    
 
@@ -99,7 +77,7 @@ policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 
 }
 
-
+/* 
 ///   S3    
 module "s3_bucket" {
   source = "./modules/s3"
@@ -115,7 +93,7 @@ resource "aws_s3_bucket_object" "object" {
 
   etag = filemd5("for_s3/${each.value}")
 
-}
+} */
 
 ///   Security group    
 
@@ -133,30 +111,90 @@ vpc_id = aws_vpc.main.id
 
 ///   LB    
 
-module "lb" {
+module "lb-green" { 
   source = "./modules/lb"
-
+  color = "green"
+  lb_name = "greenlb"
+  tg-color = "green"
   vpc_id = aws_vpc.main.id
-/*
-  nginx_ip = "10.0.1.*" #"module.net.public_cidr_block"
-  phpmyadmin_ip = "10.0.2.*" #"module.net.private_cidr_block"
- */
-  nginx1_id = module.nginx[0].instance_id
-  nginx2_id = module.nginx[1].instance_id
-  phpmyadmin_id = module.phpmyadmin.instance_id
- 
-  lb_subnets =  [module.net.public_id, module.net.private_id]
-  lb_sec_groups = [module.nginx-sg.security_group.id]
 
+  nginx1_id = "module.nginx-green-1.instance_id"
+  nginx2_id = "module.nginx-green-2.instance_id"
+  
+ 
+  lb_subnets =  [module.net.a_id,module.net.b_id]
+  lb_sec_groups = [module.nginx-sg.security_group.id]
+  lb-target-group = aws_lb_target_group.green-tg.arn
+}
+
+module "lb-blue" { 
+  source = "./modules/lb"
+  color = "blue"
+  lb_name = "bluelb"
+  tg-color = "blue"
+  vpc_id = aws_vpc.main.id
+
+  nginx1_id = "module.nginx-blue-1.instance_id"
+  nginx2_id = "module.nginx-blue-2.instance_id"
+ 
+  lb_subnets =  [module.net.a_id,module.net.b_id]
+  lb_sec_groups = [module.nginx-sg.security_group.id]
+  lb-target-group = aws_lb_target_group.blue-tg.arn
+}
+
+
+/// nginx target group
+
+resource "aws_lb_target_group" "green-tg" {
+  name     = "green-tg"
+  port     = 443
+  protocol = "HTTPS"
+  target_type = "instance"
+  vpc_id           = aws_vpc.main.id
+}
+ 
+ resource "aws_lb_target_group_attachment" "green1" {
+  target_group_arn = aws_lb_target_group.green-tg.arn
+  target_id        = module.nginx-green-1.instance_id
+  port             = 443     
   
 }
+resource "aws_lb_target_group_attachment" "green2" {
+  target_group_arn = aws_lb_target_group.green-tg.arn
+  target_id        = module.nginx-green-2.instance_id
+  port             = 443     
+  
+}  
+
+resource "aws_lb_target_group" "blue-tg" {
+  name     = "blue-tg"
+  port     = 443
+  protocol = "HTTPS"
+  target_type = "instance"
+  vpc_id           = aws_vpc.main.id
+}
+ 
+ resource "aws_lb_target_group_attachment" "blue1" {
+  target_group_arn = aws_lb_target_group.blue-tg.arn
+  target_id        = module.nginx-blue-1.instance_id
+  port             = 443     
+  
+}
+resource "aws_lb_target_group_attachment" "blue2" {
+  target_group_arn = aws_lb_target_group.blue-tg.arn
+  target_id        = module.nginx-blue-2.instance_id
+  port             = 443     
+  
+} 
+
+
 
 ///   Cloudflare    
 
 resource "cloudflare_record" "set-lb-cname" {
   zone_id = "6a997a1bf60b60dc3ca23297fb5db1ab"
   name    = "@"
-  value   = module.lb.load_balancer_addr
+  value   = var.color != "green" ? module.lb-blue.load_balancer_addr : module.lb-green.load_balancer_addr  # module.lb-blue.load_balancer_addr
   type    = "CNAME"
   ttl     = "1"
   proxied = "true"

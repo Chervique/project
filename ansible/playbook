@@ -1,0 +1,15 @@
+- name: install nginx and php
+  hosts: aws_ec2
+  become: yes
+  roles: 
+    - nginx
+
+
+- name: install mysql and phpmyadmin
+  hosts: tag_name_phpmyadmin
+  become: yes
+  roles:
+    - phpmyadmin
+  
+  
+  
