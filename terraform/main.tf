@@ -1,7 +1,7 @@
 ///   VPC and subnets   
 
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vps_cidr 
   enable_dns_hostnames = true
   
   tags = {
@@ -13,9 +13,9 @@ resource "aws_vpc" "main" {
 module "net" {
   source = "./modules/net"
   vpc_id = aws_vpc.main.id
-  green_cidr_block = "10.0.1.0/24"
-  blue_cidr_block = "10.0.2.0/24"
-  db_cidr_block = "10.0.3.0/24"
+  green_cidr_block = var.first_subnet
+  blue_cidr_block = var.second_subnet
+  db_cidr_block = var.rds_subnet
   
 }
 
@@ -49,7 +49,7 @@ module "nginx-green-1" {
   #zone = "${var.zone != "" ? var.zone: var.zones[ count.index % length(var.zones) ]}"
   zone = var.zones[0]
   subnet_id = module.net.a_id         
-  webserver_name = "nginx-green-1"
+  webserver_name = var.names[0]
 }
 module "nginx-green-2" {
   source = "./modules/ec2_web"
@@ -58,7 +58,7 @@ module "nginx-green-2" {
   sec_groups = [module.nginx-sg.security_group.id]
   zone = var.zones[1]
   subnet_id = module.net.b_id         
-  webserver_name = "nginx-green-2"
+  webserver_name = var.names[1]
 }
 module "nginx-blue-1" {
   source = "./modules/ec2_web"
@@ -68,7 +68,7 @@ module "nginx-blue-1" {
   #zone = "${var.zone != "" ? var.zone: var.zones[ count.index % length(var.zones) ]}"
   zone = var.zones[0]
   subnet_id = module.net.a_id         
-  webserver_name = "nginx-blue-1"
+  webserver_name = var.names[2]
 }
 module "nginx-blue-2" {
   source = "./modules/ec2_web"
@@ -77,16 +77,9 @@ module "nginx-blue-2" {
   sec_groups = [module.nginx-sg.security_group.id]
   zone = var.zones[1]
   subnet_id = module.net.b_id         
-  webserver_name = "nginx-blue-2"
+  webserver_name = var.names[3]
 }
 
-
-///   DATABASE    
-/* module "rds" {
-  source = "./modules/rds"
-  
-  
-} */
 
 ///   Roles and policies    
 
@@ -213,7 +206,7 @@ resource "aws_lb_target_group_attachment" "blue2" {
 resource "cloudflare_record" "set-lb-cname" {
   zone_id = "6a997a1bf60b60dc3ca23297fb5db1ab"
   name    = "@"
-  value   = var.color != "green" ? module.lb-blue.load_balancer_addr : module.lb-green.load_balancer_addr  # module.lb-blue.load_balancer_addr
+  value   = var.color != "green" ? module.lb-blue.load_balancer_addr : module.lb-green.load_balancer_addr
   type    = "CNAME"
   ttl     = "1"
   proxied = "true"
