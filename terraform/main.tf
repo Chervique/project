@@ -27,7 +27,7 @@ resource "aws_db_instance" "default" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  publicly_accessible  = true
+  //publicly_accessible  = true
   vpc_security_group_ids = [module.nginx-sg.security_group.id]
 
   name                 = "mydb"
