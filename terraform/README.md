@@ -48,13 +48,14 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_awsid"></a> [awsid](#input\_awsid) | AWS ID | `string` | n/a | yes |
 | <a name="input_awskey"></a> [awskey](#input\_awskey) | AWS key | `string` | n/a | yes |
-| <a name="input_color"></a> [color](#input\_color) | n/a | `string` | `"green"` | no |
-| <a name="input_dns-blue"></a> [dns-blue](#input\_dns-blue) | n/a | `string` | `"module.lb-blue.load_balancer_addr"` | no |
-| <a name="input_dns-green"></a> [dns-green](#input\_dns-green) | n/a | `string` | `"module.lb-green.load_balancer_addr"` | no |
-| <a name="input_enable-green"></a> [enable-green](#input\_enable-green) | n/a | `bool` | `true` | no |
-| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | n/a | `list(string)` | <pre>[<br>  "module.net.subnet_ids"<br>]</pre> | no |
+| <a name="input_color"></a> [color](#input\_color) | Set this var to color name GREEN/BLUE to change the branch | `string` | `"green"` | no |
+| <a name="input_first_subnet"></a> [first\_subnet](#input\_first\_subnet) | First subnet cidr | `string` | `"10.0.1.0/24"` | no |
+| <a name="input_names"></a> [names](#input\_names) | Instance names | `list(string)` | <pre>[<br>  "nginx-green-1",<br>  "nginx-green-2",<br>  "nginx-blue-1",<br>  "nginx-blue-2"<br>]</pre> | no |
+| <a name="input_rds_subnet"></a> [rds\_subnet](#input\_rds\_subnet) | Database subnet cidr | `string` | `"10.0.3.0/24"` | no |
+| <a name="input_second_subnet"></a> [second\_subnet](#input\_second\_subnet) | Second subnet cidr | `string` | `"10.0.2.0/24"` | no |
+| <a name="input_vps_cidr"></a> [vps\_cidr](#input\_vps\_cidr) | VPS net | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | for single zone deployment | `string` | `"eu-central-1a"` | no |
-| <a name="input_zones"></a> [zones](#input\_zones) | Availability zones | `list(string)` | <pre>[<br>  "eu-central-1a",<br>  "eu-central-1b"<br>]</pre> | no |
+| <a name="input_zones"></a> [zones](#input\_zones) | Availability zones | `list(string)` | <pre>[<br>  "eu-central-1a",<br>  "eu-central-1b",<br>  "eu-central-1c"<br>]</pre> | no |
 
 ## Outputs
 
