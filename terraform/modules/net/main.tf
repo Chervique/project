@@ -24,7 +24,7 @@ resource "aws_subnet" "db" {
     vpc_id = var.vpc_id
     cidr_block = var.db_cidr_block
     map_public_ip_on_launch = true
-   availability_zone = var.zones[1]
+   availability_zone = var.zones[2]
     tags = {
         Name = "db"
     }

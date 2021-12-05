@@ -37,7 +37,7 @@ variable "rds_subnet" {
 variable "names" {
     description = "Instance names"
     type = list(string)
-    default = ["nginx-green-1","nginx-green-2","nginx-blue-1","nginx-blue-2"]
+    default = ["nginx-green-1","nginx-green-2","nginx-blue-1","nginx-blue-2","phpmyadmin-green","phpmyadmin-blue"]
 }
 
 

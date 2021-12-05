@@ -5,11 +5,11 @@
     - nginx
 
 
-# - name: install mysql and phpmyadmin
-#   hosts: tag_name_phpmyadmin
-#   become: yes
-#   roles:
-#     - phpmyadmin
+- name: install mysql and phpmyadmin
+  hosts: tag_name_phpmyadmin
+  become: yes
+  roles:
+    - phpmyadmin
   
   
   

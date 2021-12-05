@@ -5,6 +5,9 @@ output "a_id" {
 output "b_id" {
     value = aws_subnet.b.id
 }
+output "phpmyadmin_id" {
+    value = aws_subnet.db.id
+} 
 
 output "db_id" {
     value = aws_db_subnet_group.db.id
@@ -13,7 +16,7 @@ output "db_id" {
  variable "zones" {
     description = "Availability zones"
     type = list(string)
-    default = ["eu-central-1a","eu-central-1b"]
+    default = ["eu-central-1a","eu-central-1b","eu-central-1c"]
 } 
 
 /////

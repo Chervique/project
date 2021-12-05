@@ -15,5 +15,6 @@ resource "aws_instance" "webserver" {
     tags = {
         Name = "${var.webserver_name}"
         Color = var.color
+        Role = "${var.role}"
     }
 }

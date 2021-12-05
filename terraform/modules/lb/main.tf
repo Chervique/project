@@ -30,17 +30,13 @@ resource "aws_lb_listener" "listener" {
 }
 
 
-
-
-
-
-/* resource "aws_lb_listener_rule" "phpmyadmin" {
-  listener_arn = aws_lb_listener.webserver_lb.arn
+ resource "aws_lb_listener_rule" "phpmyadmin" {
+  listener_arn = aws_lb_listener.listener.arn
   priority     = 100
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.phpmyadmin-tg.arn
+    target_group_arn = var.tg-arn   #aws_lb_target_group.phpmyadmin-${var.color}-tg.arn
   }
 
   condition {
@@ -50,7 +46,7 @@ resource "aws_lb_listener" "listener" {
   }
 
   
-  } */
+  } 
 
 
 

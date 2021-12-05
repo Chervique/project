@@ -25,6 +25,11 @@ type = string
 default = "webserver"
 }
 
+variable "role" {
+type = string
+default = "webserver"
+}
+
 
 
 

@@ -80,6 +80,36 @@ module "nginx-blue-2" {
   webserver_name = var.names[3]
 }
 
+///   EC2 PHPMYADMIN    
+
+module "phpmyadmin-green" {
+  source = "./modules/ec2_web"
+  vpc_id = aws_vpc.main.id
+  
+  sec_groups = [module.nginx-sg.security_group.id]
+  zone = var.zones[2]
+  subnet_id = module.net.phpmyadmin_id         
+  webserver_name = var.names[4]
+
+  
+    role = "phpmyadmin"
+  
+}
+
+module "phpmyadmin-blue" {
+  source = "./modules/ec2_web"
+  vpc_id = aws_vpc.main.id
+  
+  sec_groups = [module.nginx-sg.security_group.id]
+  zone = var.zones[2]
+  subnet_id = module.net.phpmyadmin_id         
+  webserver_name = var.names[5]
+   
+    role = "phpmyadmin"
+  
+}
+
+
 
 ///   Roles and policies    
 
@@ -137,7 +167,11 @@ module "lb-green" {
   lb_subnets =  [module.net.a_id,module.net.b_id]
   lb_sec_groups = [module.nginx-sg.security_group.id]
   lb-target-group = aws_lb_target_group.green-tg.arn
+
+  tg-arn = aws_lb_target_group.phpmyadmin-green-tg.arn
 }
+
+
 
 module "lb-blue" { 
   source = "./modules/lb"
@@ -152,10 +186,14 @@ module "lb-blue" {
   lb_subnets =  [module.net.a_id,module.net.b_id]
   lb_sec_groups = [module.nginx-sg.security_group.id]
   lb-target-group = aws_lb_target_group.blue-tg.arn
+
+  tg-arn = aws_lb_target_group.phpmyadmin-blue-tg.arn
 }
 
 
 /// nginx target group
+
+/////   nginx-green   
 
 resource "aws_lb_target_group" "green-tg" {
   name     = "green-tg"
@@ -178,6 +216,9 @@ resource "aws_lb_target_group_attachment" "green2" {
   
 }  
 
+
+/////   nginx-blue    
+
 resource "aws_lb_target_group" "blue-tg" {
   name     = "blue-tg"
   port     = 443
@@ -199,7 +240,37 @@ resource "aws_lb_target_group_attachment" "blue2" {
   
 } 
 
+/////   phpmyadmin  green   
 
+resource "aws_lb_target_group" "phpmyadmin-green-tg" {
+  name     = "phpmyadmin-green-tg"
+  port     = 443
+  protocol = "HTTPS"
+  target_type = "instance"
+  vpc_id           = aws_vpc.main.id
+}
+resource "aws_lb_target_group_attachment" "phpmyadmin-green" {
+  target_group_arn = aws_lb_target_group.phpmyadmin-green-tg.arn
+  target_id        = module.phpmyadmin-green.instance_id
+  port             = 443     
+  
+} 
+
+/////   phpmyadmin  blue   
+
+resource "aws_lb_target_group" "phpmyadmin-blue-tg" {
+  name     = "phpmyadmin-blue-tg"
+  port     = 443
+  protocol = "HTTPS"
+  target_type = "instance"
+  vpc_id           = aws_vpc.main.id
+}
+resource "aws_lb_target_group_attachment" "phpmyadmin-blue" {
+  target_group_arn = aws_lb_target_group.phpmyadmin-blue-tg.arn
+  target_id        = module.phpmyadmin-blue.instance_id
+  port             = 443     
+  
+} 
 
 ///   Cloudflare    
 

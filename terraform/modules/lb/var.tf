@@ -3,10 +3,10 @@ variable "lb_sec_groups" {
 }
 
 variable "lb-target-group" {
-
-
 }
 
+variable "tg-arn" {
+}
  
 variable "lb_subnets" {
     type = list(string)
