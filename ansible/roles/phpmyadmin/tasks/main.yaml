@@ -31,7 +31,11 @@
 # - name: unzip
 #   command: tar -xvzf phpMyAdmin-latest-all-languages.tar.gz -C /var/www/html/phpmyadmin --strip-components 1
 
- 
+- name: Copy INDEX
+  copy:
+        src: ./files/config.inc.php
+        dest: /var/www/html/phpmyadmin/config.inc.php
+
 
 - name: restart nginx
   service:
