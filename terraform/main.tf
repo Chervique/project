@@ -164,7 +164,7 @@ module "lb-green" {
   nginx2_id = "module.nginx-green-2.instance_id"
   
  
-  lb_subnets =  [module.net.a_id,module.net.b_id]
+  lb_subnets =  [module.net.a_id,module.net.b_id,module.net.phpmyadmin_id]
   lb_sec_groups = [module.nginx-sg.security_group.id]
   lb-target-group = aws_lb_target_group.green-tg.arn
 
@@ -183,7 +183,7 @@ module "lb-blue" {
   nginx1_id = "module.nginx-blue-1.instance_id"
   nginx2_id = "module.nginx-blue-2.instance_id"
  
-  lb_subnets =  [module.net.a_id,module.net.b_id]
+  lb_subnets =  [module.net.a_id,module.net.b_id,module.net.phpmyadmin_id]
   lb_sec_groups = [module.nginx-sg.security_group.id]
   lb-target-group = aws_lb_target_group.blue-tg.arn
 
