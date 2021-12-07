@@ -41,9 +41,6 @@ resource "aws_db_instance" "default" {
     command = <<-EOT
             echo "\$cfg['Servers'][\$i]['host'] = '${self.address}';" >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php
         EOT
-    
-    
-  
   }  
 }
 
