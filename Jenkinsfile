@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Terraform') {
             steps {
-            //    git branch: 'dev', url: 'https://github.com/Chervique/project.git'
+                git branch: 'dev', url: 'https://github.com/Chervique/project.git'
             //    sh 'rm -f -- ./"!HW7_ansible/AWS atym.pem"'
                 sh 'terraform -chdir="./terraform" init '
             withCredentials([[

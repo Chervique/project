@@ -35,6 +35,7 @@
   copy:
         src: ./files/config.inc.php
         dest: /var/www/html/phpmyadmin/config.inc.php
+        force: no
 
 
 - name: restart nginx
