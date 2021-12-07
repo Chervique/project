@@ -54,8 +54,8 @@ variable "zones" {
     default = ["eu-central-1a","eu-central-1b","eu-central-1c"]
 }
 
-variable "rds_hostname" {
+/* variable "rds_hostname" {
   description = "RDS instance hostname"
-  default       = "$cfg['Servers'][$i]['host'] = 'aws_db_instance.default.address';"
+  default       = "aws_db_instance.default.address"
 
-}
+} */

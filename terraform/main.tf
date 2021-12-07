@@ -37,7 +37,9 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot  = true
 
     provisioner "local-exec" { 
-    command = "echo '${var.rds_hostname}' >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "
+#    command = "echo '$host = [\u0027 aws_db_instance.default.address \u0027];' >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "
+    command = "echo '$cfg[\uFF07Servers\uFF07][$i][\uFF07host\uFF07] = \uFF07 ${self.address} \uFF07;' >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "
+    
   }  
 }
 
