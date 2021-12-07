@@ -36,9 +36,9 @@ resource "aws_db_instance" "default" {
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
 
-   /* provisioner "local-exec" { 
-    command = "echo ($cfg['Servers'][$i]['host'] = '${aws_db_instance.default.address}';) >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "
-  }  */
+    provisioner "local-exec" { 
+    command = "echo '${var.rds_hostname}' >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "
+  }  
 }
 
 
