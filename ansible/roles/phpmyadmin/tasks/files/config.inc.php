@@ -21,6 +21,4 @@ $cfg['Servers'][$i]['extension'] = 'mysqli';
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['port'] = '3306';
 $cfg['Servers'][$i]['verbose'] = 'RDS';
-# $cfg['Servers'][$i]['host'] = $host;
-
 $cfg['Servers'][$i]['host'] = 'terraform-20211207173254849400000001.czccxlfdajua.eu-central-1.rds.amazonaws.com';

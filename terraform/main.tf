@@ -37,19 +37,13 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot  = true
 
     
-#    command = "echo '$host = [\u0027 aws_db_instance.default.address \u0027];' >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "
-#    command = "echo '$cfg[\u0027Servers\u0027][$i][\u0027host\u0027] = \u0027 ${self.address} \u0027;' >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "
-    
     provisioner "local-exec" { 
     command = <<-EOT
             echo "\$cfg['Servers'][\$i]['host'] = '${self.address}';" >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php
         EOT
     
     
-  # command = "echo '$cfg['Servers'][$i]['host'] = '${self.address}';' >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php "   
- 
- 
- #   interpreter = ["PowerShell", "-Command"]
+  
   }  
 }
 
