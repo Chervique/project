@@ -39,7 +39,8 @@ resource "aws_db_instance" "default" {
     
     provisioner "local-exec" { 
     command = <<-EOT
-            echo "\$cfg['Servers'][\$i]['host'] = '${self.address}';" >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php
+            echo "\$cfg['Servers'][\$i]['host'] = '${self.address}';" >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php 
+            echo "ok!"
         EOT
   }  
 }
