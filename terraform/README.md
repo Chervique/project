@@ -27,6 +27,8 @@
 | <a name="module_nginx-green-1"></a> [nginx-green-1](#module\_nginx-green-1) | ./modules/ec2_web | n/a |
 | <a name="module_nginx-green-2"></a> [nginx-green-2](#module\_nginx-green-2) | ./modules/ec2_web | n/a |
 | <a name="module_nginx-sg"></a> [nginx-sg](#module\_nginx-sg) | ./modules/sec | n/a |
+| <a name="module_phpmyadmin-blue"></a> [phpmyadmin-blue](#module\_phpmyadmin-blue) | ./modules/ec2_web | n/a |
+| <a name="module_phpmyadmin-green"></a> [phpmyadmin-green](#module\_phpmyadmin-green) | ./modules/ec2_web | n/a |
 
 ## Resources
 
@@ -35,10 +37,14 @@
 | [aws_db_instance.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance) | resource |
 | [aws_lb_target_group.blue-tg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group.green-tg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
+| [aws_lb_target_group.phpmyadmin-blue-tg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
+| [aws_lb_target_group.phpmyadmin-green-tg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group_attachment.blue1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
 | [aws_lb_target_group_attachment.blue2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
 | [aws_lb_target_group_attachment.green1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
 | [aws_lb_target_group_attachment.green2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
+| [aws_lb_target_group_attachment.phpmyadmin-blue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
+| [aws_lb_target_group_attachment.phpmyadmin-green](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
 | [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [cloudflare_record.set-lb-cname](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
 
@@ -50,7 +56,7 @@
 | <a name="input_awskey"></a> [awskey](#input\_awskey) | AWS key | `string` | n/a | yes |
 | <a name="input_color"></a> [color](#input\_color) | Set this var to color name GREEN/BLUE to change the branch | `string` | `"green"` | no |
 | <a name="input_first_subnet"></a> [first\_subnet](#input\_first\_subnet) | First subnet cidr | `string` | `"10.0.1.0/24"` | no |
-| <a name="input_names"></a> [names](#input\_names) | Instance names | `list(string)` | <pre>[<br>  "nginx-green-1",<br>  "nginx-green-2",<br>  "nginx-blue-1",<br>  "nginx-blue-2"<br>]</pre> | no |
+| <a name="input_names"></a> [names](#input\_names) | Instance names | `list(string)` | <pre>[<br>  "nginx-green-1",<br>  "nginx-green-2",<br>  "nginx-blue-1",<br>  "nginx-blue-2",<br>  "phpmyadmin-green",<br>  "phpmyadmin-blue"<br>]</pre> | no |
 | <a name="input_rds_subnet"></a> [rds\_subnet](#input\_rds\_subnet) | Database subnet cidr | `string` | `"10.0.3.0/24"` | no |
 | <a name="input_second_subnet"></a> [second\_subnet](#input\_second\_subnet) | Second subnet cidr | `string` | `"10.0.2.0/24"` | no |
 | <a name="input_vps_cidr"></a> [vps\_cidr](#input\_vps\_cidr) | VPS net | `string` | `"10.0.0.0/16"` | no |
