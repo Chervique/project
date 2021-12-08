@@ -1,7 +1,9 @@
 output "dns_name_green" {
+  description = "Green DNS"
     value = module.lb-green.load_balancer_addr
 }
 output "dns_name_blue" {
+  description = "Blue DNS"
     value = module.lb-blue.load_balancer_addr
 }
 

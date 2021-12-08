@@ -31,8 +31,8 @@ resource "aws_db_instance" "default" {
   vpc_security_group_ids = [module.nginx-sg.security_group.id]
 
   name                 = "mydb"
-  username             = "atym"
-  password             = "12345678"
+  username             = var.rds-user
+  password             = var.rds-pass
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
 

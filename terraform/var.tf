@@ -41,8 +41,6 @@ variable "names" {
 }
 
 
-
-
 variable "zone" {
   description = "for single zone deployment"
   default = "eu-central-1a"
@@ -53,6 +51,24 @@ variable "zones" {
     type = list(string)
     default = ["eu-central-1a","eu-central-1b","eu-central-1c"]
 }
+
+///   RDS   
+
+variable "rds-user" {
+  description = "RDS password"
+  default = "atym"
+  sensitive = true
+}
+
+variable "rds-pass" {
+  description = "RDS username"
+  default = "12345678"
+  sensitive = true
+}
+
+
+
+
 
 /* variable "rds_hostname" {
   description = "RDS instance hostname"

@@ -57,6 +57,8 @@
 | <a name="input_color"></a> [color](#input\_color) | Set this var to color name GREEN/BLUE to change the branch | `string` | `"green"` | no |
 | <a name="input_first_subnet"></a> [first\_subnet](#input\_first\_subnet) | First subnet cidr | `string` | `"10.0.1.0/24"` | no |
 | <a name="input_names"></a> [names](#input\_names) | Instance names | `list(string)` | <pre>[<br>  "nginx-green-1",<br>  "nginx-green-2",<br>  "nginx-blue-1",<br>  "nginx-blue-2",<br>  "phpmyadmin-green",<br>  "phpmyadmin-blue"<br>]</pre> | no |
+| <a name="input_rds-pass"></a> [rds-pass](#input\_rds-pass) | RDS username | `string` | `"12345678"` | no |
+| <a name="input_rds-user"></a> [rds-user](#input\_rds-user) | RDS password | `string` | `"atym"` | no |
 | <a name="input_rds_subnet"></a> [rds\_subnet](#input\_rds\_subnet) | Database subnet cidr | `string` | `"10.0.3.0/24"` | no |
 | <a name="input_second_subnet"></a> [second\_subnet](#input\_second\_subnet) | Second subnet cidr | `string` | `"10.0.2.0/24"` | no |
 | <a name="input_vps_cidr"></a> [vps\_cidr](#input\_vps\_cidr) | VPS net | `string` | `"10.0.0.0/16"` | no |
@@ -67,8 +69,8 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dns_name_blue"></a> [dns\_name\_blue](#output\_dns\_name\_blue) | n/a |
-| <a name="output_dns_name_green"></a> [dns\_name\_green](#output\_dns\_name\_green) | n/a |
+| <a name="output_dns_name_blue"></a> [dns\_name\_blue](#output\_dns\_name\_blue) | Blue DNS |
+| <a name="output_dns_name_green"></a> [dns\_name\_green](#output\_dns\_name\_green) | Green DNS |
 | <a name="output_rds_hostname"></a> [rds\_hostname](#output\_rds\_hostname) | RDS instance hostname |
 | <a name="output_rds_port"></a> [rds\_port](#output\_rds\_port) | RDS instance port |
 | <a name="output_rds_username"></a> [rds\_username](#output\_rds\_username) | RDS instance root username |
