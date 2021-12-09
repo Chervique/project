@@ -32,11 +32,6 @@
 #   command: tar -xvzf phpMyAdmin-latest-all-languages.tar.gz -C /var/www/html/phpmyadmin --strip-components 1
 
 
-- name: Get RDS address
-  community.aws.rds_instance_info:
-    instanses.endpoint.address: new-database
-  register: new_database_info
-
 
 - name: Copy PMA config
   copy:
