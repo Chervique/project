@@ -1,3 +1,5 @@
+
+
 - name: install nginx and php
   hosts: aws_ec2
   become: yes
