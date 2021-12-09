@@ -3,6 +3,7 @@ regions:
   - eu-central-1
 
 keyed_groups:
-  - prefix: tag_name
+  - prefix: tag_role_
     key: tags.Role
+    separator: ""
   
