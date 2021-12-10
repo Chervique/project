@@ -10,6 +10,7 @@ data "aws_iam_policy_document" "s3_access" {
     sid = ""
     effect = "Allow"
     actions = ["sts:AssumeRole"]
+    
 
       principals {
         type        = "Service"

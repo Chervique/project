@@ -5,6 +5,4 @@ regions:
 keyed_groups:
   - prefix: tag_name
     key: tags.Role
-
- 
   

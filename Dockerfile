@@ -12,7 +12,8 @@ RUN apt update && \
     apt install terraform -y  && \
     apt install ansible -y && \
     apt install git -y   && \
-    ansible-galaxy collection install amazon.aws&& \
+    ansible-galaxy collection install amazon.aws && \
+    ansible-galaxy collection install community.aws && \
     apt install python3-boto3 -y && \
     apt-get -y install python3-distutils && \
     wget https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py && \

@@ -41,12 +41,12 @@ resource "aws_db_instance" "default" {
   }
 
     
-    provisioner "local-exec" { 
+    /* provisioner "local-exec" { 
     command = <<-EOT
             echo "\$cfg['Servers'][\$i]['host'] = '${self.address}';" >> ../ansible/roles/phpmyadmin/tasks/files/config.inc.php 
             echo "ok!"
         EOT
-  }  
+  }   */
 }
 
 
@@ -127,27 +127,10 @@ module "phpmyadmin-blue" {
 
 module "EC2_policy" {
  source = "./modules/keys"
-policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 
 }
 
-/* 
-///   S3    
-module "s3_bucket" {
-  source = "./modules/s3"
-
-  bucket_name = "atymhw4"
-  bucket_type = "public-read"
-}
-resource "aws_s3_bucket_object" "object" {
-  for_each = fileset("for_s3/", "*")
-  bucket   = module.s3_bucket.bucket_name
-  key      = each.value
-  source   = "for_s3/${each.value}"
-
-  etag = filemd5("for_s3/${each.value}")
-
-} */
 
 ///   Security group    
 
