@@ -1,4 +1,0 @@
-plugin: amazon.aws.aws_rds
-regions:
-  - eu-central-1
-
